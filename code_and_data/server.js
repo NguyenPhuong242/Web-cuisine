@@ -16,8 +16,6 @@ app.use(cookieSession({
   secret: 'mot-de-passe-du-cookie'
 }));
 
-
-
 app.engine('html', mustache());
 app.set('view engine', 'html');
 app.set('views', './views');
@@ -29,6 +27,16 @@ function is_authenticated(req, res, next){
   res.status(401).send('Authentication required');
 }
 
+function login(name, password) {
+  const user = model.getUserByName(name);
+  if (user && user.password === password) {
+    return user.id;
+  } else {
+    return -1;
+  }
+}
+
+
 app.use(function(req,res,next){
   if(req.session.user!== undefined){
     res.locals.authenticated == true;
@@ -36,8 +44,6 @@ app.use(function(req,res,next){
   }
   return next();
 })
-
-
 
 /**** Routes pour voir les pages du site ****/
 
