@@ -1,4 +1,5 @@
 "use strict"
+
 /* Serveur pour le site de recettes */
 var express = require('express');
 var mustache = require('mustache-express');
