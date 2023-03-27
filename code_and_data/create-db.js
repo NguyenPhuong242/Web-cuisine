@@ -41,6 +41,7 @@ let load = function(filename) {
 
 load('data.json');
 
+
 db.prepare('DROP TABLE IF EXISTS user').run();
 db.prepare('CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, password TEXT)').run();
 db.prepare("INSERT INTO user (name, password) VALUES ('admin', 'admin')").run();
