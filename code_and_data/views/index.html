@@ -1,11 +1,16 @@
 {{> header}}
-  <button>
-    Se connecter
-  </button>
+  <a href="login.html">
+    <button id="login">
+      Se connecter
+    </button>
+  </a>
 
-  <button>
-    Creer nouvelle compte
-  </button>
+  <a href="new_user.html">
+    <button id="signup">
+      Creer nouvelle compte
+    </button>
+  </a>
+
   <div>
     <div>
       <h1>Cuisiner c'est bon pour la santé</h1>
@@ -14,4 +19,15 @@
     </div>
   </div>
 
+  <script>
+    const loginButton = document.getElementById('login');
+    loginButton.addEventListener('click', function() {
+      window.location.href = 'login.html';
+    });
+
+    const signupButton = document.getElementById('signup');
+    signupButton.addEventListener('click', function() {
+      window.location.href = 'new_user.html'
+    })
+  </script>
 {{> footer}}

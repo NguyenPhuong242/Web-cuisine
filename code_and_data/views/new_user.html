@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Create new account</title>
+</head>
+<body>
+  <h1>Create new account</h1>
+  <form method="POST" action="/new_user">
+    <label for="user">Username:</label>
+    <input type="text" id="user" name="user">
+    <br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+    <br><br>
+    <input type="submit" value="Create account">
+  </form>
+  <br>
+  <a href="/login">Back to login</a>
+</body>
+</html>
