@@ -37,16 +37,18 @@ app.use(function(req, res, next) {
 });
 
 app.post('/new_user', (req, res) => {
-  const user = model.new_user(req.body.user, req.body.password);
-  if (user != -1) {
-    req.session.user = user;
+  const result = model.new_user(req.body.user, req.body.password);
+  if (result.error) {
+    // user already exists, display error message
+    res.render('new_user', { error: result.error });
+  } else {
+    // user successfully created, redirect to homepage
+    req.session.user = result;
     req.session.name = req.body.user;
     res.redirect('/');
-  } else {
-    // alert('Utilisateur est exists');
-    res.redirect('/new_user');
   }
 });
+
 
 
 app.post('/login', (req, res) => {

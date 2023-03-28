@@ -10,8 +10,13 @@ exports.login = function(user, password) {
   return result.id;
 }
 
+
 exports.new_user = function(user, password) {
-  let result = db.prepare('INSERT INTO user (name, password) VALUES (?, ?)').run(user, password);
+  let result = db.prepare('SELECT id FROM user WHERE name = ?').get(user);
+  if (result !== undefined) {
+    return {error: 'User already exists'};
+  }
+  result = db.prepare('INSERT INTO user (name, password) VALUES (?, ?)').run(user, password);
   return result.lastInsertRowid;
 }
 
