@@ -4,6 +4,17 @@ const Sqlite = require('better-sqlite3');
 
 let db = new Sqlite('db.sqlite');
 
+exports.login = function(user, password) {
+  let result = db.prepare('SELECT id FROM user WHERE name = ? AND password = ?').get(user, password);
+  if (result === undefined) return -1;
+  return result.id;
+}
+
+exports.new_user = function(user, password) {
+  let result = db.prepare('INSERT INTO user (name, password) VALUES (?, ?)').run(user, password);
+  return result.lastInsertRowid;
+}
+
 /* Lire le contenu d'une recette à partir de son identifiant.
 
 Cette fonction prend en argument un identifiant de recette.
@@ -135,4 +146,5 @@ exports.search = (query, page) => {
     num_pages: parseInt(num_found / num_per_page) + 1,
   };
 };
+
 

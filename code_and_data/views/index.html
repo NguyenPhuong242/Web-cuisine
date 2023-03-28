@@ -1,33 +1,11 @@
 {{> header}}
-  <a href="login.html">
-    <button id="login">
-      Se connecter
-    </button>
-  </a>
 
-  <a href="new_user.html">
-    <button id="signup">
-      Creer nouvelle compte
-    </button>
-  </a>
+  <div class="jumbotron mt-5">
+    <div class="container">
+      <h1 class="display-3">Cuisiner c'est bon pour la santé</h1>
 
-  <div>
-    <div>
-      <h1>Cuisiner c'est bon pour la santé</h1>
-
-      <img src="https://cdn.pixabay.com/photo/2016/04/05/20/29/kitchen-1310290_960_720.jpg">
+      <img class="img-fluid" src="https://pageperso.lis-lab.fr/benoit.favre/tp-web/images/kitchen.jpg">
     </div>
   </div>
 
-  <script>
-    const loginButton = document.getElementById('login');
-    loginButton.addEventListener('click', function() {
-      window.location.href = 'login.html';
-    });
-
-    const signupButton = document.getElementById('signup');
-    signupButton.addEventListener('click', function() {
-      window.location.href = 'new_user.html'
-    })
-  </script>
 {{> footer}}

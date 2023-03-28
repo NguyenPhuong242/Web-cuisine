@@ -1,21 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Create new account</title>
-</head>
-<body>
-  <h1>Create new account</h1>
-  <form method="GET" action="/new_user">
-    <label for="user">Username:</label>
-    <input type="text" id="user" name="user">
-    <br><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password">
-    <br><br>
-    <input type="submit" value="Create account">
-  </form>
-  <br>
-  <a href="/login">Back to login</a>
-</body>
-</html>
+{{> header}}
+
+  <div class="jumbotron mt-5">
+    <div class="container">
+      <h1 class="display-3">Nouvelle compte</h1>
+      <form action="/new_user" method="post">
+        <input class="form-control mb-2" type="text" name="user" placeholder="User">
+        <input class="form-control mb-2" type="password" name="password" placeholder="Password">
+        <input class="form-control btn btn-primary" type="submit" value="Sign up">
+      </form>
+    </div>
+  </div>
+
+{{> footer}}

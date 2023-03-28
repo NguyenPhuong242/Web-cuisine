@@ -1,49 +1,77 @@
-"use strict"
+"use strict";
 
 /* Serveur pour le site de recettes */
-var express = require('express');
-var mustache = require('mustache-express');
+let express = require('express');
+let mustache = require('mustache-express');
 
-var model = require('./model');
-var app = express();
+let model = require('./model');
+let app = express();
 
 // parse form arguments in POST requests
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const cookieSession = require('cookie-session');
+
 app.use(cookieSession({
-  secret: 'mot-de-passe-du-cookie'
+  secret: 'mot-de-passe-du-cookie',
 }));
 
 app.engine('html', mustache());
 app.set('view engine', 'html');
 app.set('views', './views');
 
-function is_authenticated(req, res, next){
-  if(req.session.user !== undefined){
+function is_authenticated(req, res, next) {
+  if (req.session.user !== undefined) {
     return next();
   }
   res.status(401).send('Authentication required');
-}
+};
 
-function login(name, password) {
-  const user = model.getUserByName(name);
-  if (user && user.password === password) {
-    return user.id;
-  } else {
-    return -1;
-  }
-}
-
-
-app.use(function(req,res,next){
-  if(req.session.user!== undefined){
-    res.locals.authenticated == true;
+app.use(function(req, res, next) {
+  if (req.session.user !== undefined) {
+    res.locals.authenticated = true;
     res.locals.name = req.session.name;
   }
   return next();
-})
+});
+
+app.post('/new_user', (req, res) => {
+  const user = model.new_user(req.body.user, req.body.password);
+  if (user != -1) {
+    req.session.user = user;
+    req.session.name = req.body.user;
+    res.redirect('/');
+  } else {
+    // alert('Utilisateur est exists');
+    res.redirect('/new_user');
+  }
+});
+
+
+app.post('/login', (req, res) => {
+  const user = model.login(req.body.user, req.body.password);
+  if (user != -1) {
+    req.session.user = user;
+    req.session.name = req.body.user;
+    res.redirect('/');
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/new_user', (req, res) => {
+  res.render('new_user');
+});
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/logout', (req, res) => {
+  req.session = null;
+  res.redirect('/');
+});
 
 /**** Routes pour voir les pages du site ****/
 
@@ -52,66 +80,29 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.post('/login', (req, res) => {
-  const user = model.login(req.body.user,req.body.password);
-  if(user > 0){
-    req.session.user = user;
-    req.session.name = req.body.user;
-    req.redirect('/');
-  }
-  else{
-    res.redirect('/login')
-  }
-})
-
-app.post('/new_user', (req, res) =>{
-  const user = model.neis_authenticatew_user(req.body.user, req.body.password);
-  if(user != -1){
-    req.session.user = user; is_authenticated
-    req.session.name = req.body.user;
-    res.redirect('/');
-  }
-  else{
-    res.redirect('/');
-  }
-})
-
-app.get('/logout', (req, res) =>{
-  req.session = null;
-  res.redirect('/');
-})
-
-app.get('/login', (req, res) => {
-  res.render('login');
-}); 401
-
-app.get('/new_user', (req,res) => {session
-  res.render('new_user');
-})
-
 /* Retourne les résultats de la recherche à partir de la requête "query" */
 app.get('/search', (req, res) => {
-  var found = model.search(req.query.query, req.query.page);
+  let found = model.search(req.query.query, req.query.page);
   res.render('search', found);
-});is_authenticated
+});
 
 /* Retourne le contenu d'une recette d'identifiant "id" */
 app.get('/read/:id', (req, res) => {
-  var entry = model.read(req.params.id);
+  let entry = model.read(req.params.id);
   res.render('read', entry);
-});is_authenticated
+});
 
-app.get('/create',is_authenticated ,(req, res) => {
+app.get('/create', is_authenticated, (req, res) => {
   res.render('create');
 });
 
-app.get('/update/:id',is_authenticated ,(req, res) => {
-  var entry = model.read(req.params.id);
+app.get('/update/:id', is_authenticated, (req, res) => {
+  let entry = model.read(req.params.id);
   res.render('update', entry);
 });
 
-app.get('/delete/:id',is_authenticated ,(req, res) => {
-  var entry = model.read(req.params.id);
+app.get('/delete/:id', is_authenticated, (req, res) => {
+  let entry = model.read(req.params.id);
   res.render('delete', {id: req.params.id, title: entry.title});
 });
 
@@ -129,21 +120,20 @@ function post_data_to_recipe(req) {
   };
 }
 
-app.post('/create',is_authenticated ,(req, res) => {
-  var id = model.create(post_data_to_recipe(req));
+app.post('/create', is_authenticated, (req, res) => {
+  let id = model.create(post_data_to_recipe(req));
   res.redirect('/read/' + id);
 });
 
-app.post('/update/:id',is_authenticated ,(req, res) => {
-  var id = req.params.id;
+app.post('/update/:id', is_authenticated, (req, res) => {
+  let id = req.params.id;
   model.update(id, post_data_to_recipe(req));
   res.redirect('/read/' + id);
 });
 
-app.post('/delete/:id',is_authenticated ,(req, res) => {
+app.post('/delete/:id', is_authenticated, (req, res) => {
   model.delete(req.params.id);
   res.redirect('/');
 });
 
 app.listen(3000, () => console.log('listening on http://localhost:3000'));
-

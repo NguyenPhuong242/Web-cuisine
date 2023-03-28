@@ -1,21 +1,23 @@
 {{> header}}
-  <div>
-    <div>
-    <h1>{{title}}</h1>
-    <p>
-    <a href="/update/{{id}}">Modifier</a>
-    <a href="/delete/{{id}}">Supprimer</a>
-    </p>
+  <div class="row row-cols-1 row-cols-sm-2">
+    <div class="col">
+      <h1>{{title}}</h1>
+      {{#authenticated}}
+      <p>
+        <a class="btn btn-primary" href="/update/{{id}}">Modifier</a>
+        <a class="btn btn-primary" href="/delete/{{id}}">Supprimer</a>
+      </p>
+      {{/authenticated}}
 
-    <p>{{description}}</p>
-    <p>Durée : {{duration}}</p>
+      <p>{{description}}</p>
+      <p>Durée : {{duration}}</p>
     </div>
-    <div>
-    <img src="{{img}}">
+    <div class="col">
+      <img class="img-fluid" src="{{img}}">
     </div>
   </div>
-  <div>
-    <div>
+  <div class="row">
+    <div class="col">
     Ingrédients :
     <ul>
       {{#ingredients}}
@@ -24,8 +26,8 @@
     </ul>
     </div>
   </div>
-  <div>
-    <div>
+  <div class="row pt-3">
+    <div class="col">
     Étapes :
     <ol>
       {{#stages}}

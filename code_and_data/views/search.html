@@ -1,19 +1,19 @@
 {{> header}}
 
-  <div>
-    <div>
+  <div class="row">
+    <div class="col">
       <h1>{{num_found}} recettes trouvées {{#page}} (page {{page}}/{{num_pages}}) {{/page}}</h1>
     </div>
   </div>
 
-  <div>
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
       {{#results}}
-      <div>
+      <div class="col mb-3">
         <a href="/read/{{entry}}">
-          <div>
-            <img src="{{img}}">
-            <div>
-                <p>{{title}}</p>
+          <div class="card mb-4 h-100">
+            <img class="card-img-top" src="{{img}}">
+            <div class="card-body">
+                <p class="card-text">{{title}}</p>
             </div>
           </div>
         </a>
@@ -22,9 +22,9 @@
   </div>
 
   {{#next_page}}
-  <div>
-    <div>
-      <a href="/search?query={{query}}&page={{next_page}}">Page suivante</a>
+  <div class="row">
+    <div class="col">
+      <a class="btn btn-primary" href="/search?query={{query}}&page={{next_page}}">Page suivante</a>
     </div>
   </div>
   {{/next_page}}
